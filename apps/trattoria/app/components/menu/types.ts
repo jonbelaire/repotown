@@ -1,7 +1,12 @@
 export interface IMenuItem {
-    id: number;
-    name: string;
-    description: string;
-    price: number;
-    image: string;
+  name: string;
+  description: string;
+  price: number;
+  image: {
+    fields: {
+      file: {
+        url: string;
+      };
+    };
+  };
 }
