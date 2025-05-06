@@ -4,7 +4,7 @@ export default function MenuItem({ item }: { item: IMenuItem }) {
   return (
     <div className="p-6 border border-gray-200 rounded-xl shadow-lg bg-white transition-transform duration-300 ease-in-out hover:scale-105">
       <img
-        src={item.image}
+        src={item.image.fields.file.url}
         alt={item.name}
         className="w-full h-48 object-cover rounded-t-lg"
       />
