@@ -61,7 +61,7 @@ func (s *transactionService) CreateTransaction(ctx context.Context, txType domai
 
 	// Create transaction
 	transaction := domain.NewTransaction(txType, accountID, amount, currencyCode, description)
-	
+
 	// Save transaction (pending)
 	if err := s.transactionRepo.Create(ctx, transaction); err != nil {
 		return nil, err

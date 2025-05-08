@@ -14,11 +14,11 @@ type TransactionStatus string
 
 // Transaction types
 const (
-	TransactionTypeDeposit     TransactionType = "deposit"
-	TransactionTypeWithdrawal  TransactionType = "withdrawal"
-	TransactionTypeTransfer    TransactionType = "transfer"
-	TransactionTypeFee         TransactionType = "fee"
-	TransactionTypeInterest    TransactionType = "interest"
+	TransactionTypeDeposit    TransactionType = "deposit"
+	TransactionTypeWithdrawal TransactionType = "withdrawal"
+	TransactionTypeTransfer   TransactionType = "transfer"
+	TransactionTypeFee        TransactionType = "fee"
+	TransactionTypeInterest   TransactionType = "interest"
 )
 
 // Transaction statuses
@@ -31,20 +31,20 @@ const (
 
 // Transaction represents a financial transaction
 type Transaction struct {
-	ID               string            `json:"id"`
-	Type             TransactionType   `json:"type"`
-	Status           TransactionStatus `json:"status"`
-	AccountID        string            `json:"account_id"`
-	SourceAccountID  *string           `json:"source_account_id,omitempty"`
-	TargetAccountID  *string           `json:"target_account_id,omitempty"`
-	Amount           int64             `json:"amount"` // Stored in cents
-	CurrencyCode     string            `json:"currency_code"`
-	Description      string            `json:"description"`
-	Reference        string            `json:"reference,omitempty"`
-	Metadata         map[string]string `json:"metadata,omitempty"`
-	CreatedAt        time.Time         `json:"created_at"`
-	UpdatedAt        time.Time         `json:"updated_at"`
-	CompletedAt      *time.Time        `json:"completed_at,omitempty"`
+	ID              string            `json:"id"`
+	Type            TransactionType   `json:"type"`
+	Status          TransactionStatus `json:"status"`
+	AccountID       string            `json:"account_id"`
+	SourceAccountID *string           `json:"source_account_id,omitempty"`
+	TargetAccountID *string           `json:"target_account_id,omitempty"`
+	Amount          int64             `json:"amount"` // Stored in cents
+	CurrencyCode    string            `json:"currency_code"`
+	Description     string            `json:"description"`
+	Reference       string            `json:"reference,omitempty"`
+	Metadata        map[string]string `json:"metadata,omitempty"`
+	CreatedAt       time.Time         `json:"created_at"`
+	UpdatedAt       time.Time         `json:"updated_at"`
+	CompletedAt     *time.Time        `json:"completed_at,omitempty"`
 }
 
 // NewTransaction creates a new transaction

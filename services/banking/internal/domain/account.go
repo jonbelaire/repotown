@@ -22,8 +22,8 @@ type AccountStatus string
 
 // Account types
 const (
-	AccountTypeSavings   AccountType = "savings"
-	AccountTypeChecking  AccountType = "checking"
+	AccountTypeSavings    AccountType = "savings"
+	AccountTypeChecking   AccountType = "checking"
 	AccountTypeCreditCard AccountType = "credit_card"
 )
 
@@ -36,17 +36,17 @@ const (
 
 // Account represents a bank account
 type Account struct {
-	ID            string        `json:"id"`
-	CustomerID    string        `json:"customer_id"`
-	Type          AccountType   `json:"type"`
-	Status        AccountStatus `json:"status"`
-	Balance       int64         `json:"balance"` // Stored in cents
-	CurrencyCode  string        `json:"currency_code"`
-	Name          string        `json:"name"`
-	Number        string        `json:"number"`
-	CreatedAt     time.Time     `json:"created_at"`
-	UpdatedAt     time.Time     `json:"updated_at"`
-	ClosedAt      *time.Time    `json:"closed_at,omitempty"`
+	ID           string        `json:"id"`
+	CustomerID   string        `json:"customer_id"`
+	Type         AccountType   `json:"type"`
+	Status       AccountStatus `json:"status"`
+	Balance      int64         `json:"balance"` // Stored in cents
+	CurrencyCode string        `json:"currency_code"`
+	Name         string        `json:"name"`
+	Number       string        `json:"number"`
+	CreatedAt    time.Time     `json:"created_at"`
+	UpdatedAt    time.Time     `json:"updated_at"`
+	ClosedAt     *time.Time    `json:"closed_at,omitempty"`
 }
 
 // NewAccount creates a new account with default values

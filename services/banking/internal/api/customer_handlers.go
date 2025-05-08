@@ -15,7 +15,7 @@ import (
 type CustomerHandler struct {
 	customerService service.CustomerService
 	accountService  service.AccountService
-	logger         logging.Logger
+	logger          logging.Logger
 }
 
 // NewCustomerHandler creates a new customer handler
@@ -27,7 +27,7 @@ func NewCustomerHandler(
 	return &CustomerHandler{
 		customerService: customerService,
 		accountService:  accountService,
-		logger:         logger,
+		logger:          logger,
 	}
 }
 
@@ -56,7 +56,7 @@ type CustomerRequest struct {
 func (h *CustomerHandler) listCustomers(w http.ResponseWriter, r *http.Request) {
 	// Parse pagination parameters
 	limit, offset := getPaginationParams(r)
-	
+
 	// Get customers
 	customers, err := h.customerService.ListCustomers(r.Context(), limit, offset)
 	if err != nil {
@@ -64,7 +64,7 @@ func (h *CustomerHandler) listCustomers(w http.ResponseWriter, r *http.Request) 
 		httputils.ErrorJSON(w, httputils.ErrInternal)
 		return
 	}
-	
+
 	httputils.JSON(w, http.StatusOK, customers)
 }
 
@@ -76,7 +76,7 @@ func (h *CustomerHandler) createCustomer(w http.ResponseWriter, r *http.Request)
 		httputils.ErrorJSON(w, httputils.ErrBadRequest)
 		return
 	}
-	
+
 	// Create customer
 	customer, err := h.customerService.CreateCustomer(
 		r.Context(),
@@ -100,7 +100,7 @@ func (h *CustomerHandler) createCustomer(w http.ResponseWriter, r *http.Request)
 		httputils.ErrorJSON(w, httputils.ErrInternal)
 		return
 	}
-	
+
 	httputils.JSON(w, http.StatusCreated, customer)
 }
 
@@ -108,7 +108,7 @@ func (h *CustomerHandler) createCustomer(w http.ResponseWriter, r *http.Request)
 func (h *CustomerHandler) getCustomer(w http.ResponseWriter, r *http.Request) {
 	// Get customer ID from path
 	id := chi.URLParam(r, "id")
-	
+
 	// Get customer
 	customer, err := h.customerService.GetCustomer(r.Context(), id)
 	if err != nil {
@@ -120,7 +120,7 @@ func (h *CustomerHandler) getCustomer(w http.ResponseWriter, r *http.Request) {
 		httputils.ErrorJSON(w, httputils.ErrInternal)
 		return
 	}
-	
+
 	httputils.JSON(w, http.StatusOK, customer)
 }
 
@@ -128,14 +128,14 @@ func (h *CustomerHandler) getCustomer(w http.ResponseWriter, r *http.Request) {
 func (h *CustomerHandler) updateCustomer(w http.ResponseWriter, r *http.Request) {
 	// Get customer ID from path
 	id := chi.URLParam(r, "id")
-	
+
 	// Parse request body
 	var req CustomerRequest
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
 		httputils.ErrorJSON(w, httputils.ErrBadRequest)
 		return
 	}
-	
+
 	// Update customer
 	customer, err := h.customerService.UpdateCustomer(
 		r.Context(),
@@ -164,7 +164,7 @@ func (h *CustomerHandler) updateCustomer(w http.ResponseWriter, r *http.Request)
 		httputils.ErrorJSON(w, httputils.ErrInternal)
 		return
 	}
-	
+
 	httputils.JSON(w, http.StatusOK, customer)
 }
 
@@ -172,7 +172,7 @@ func (h *CustomerHandler) updateCustomer(w http.ResponseWriter, r *http.Request)
 func (h *CustomerHandler) deleteCustomer(w http.ResponseWriter, r *http.Request) {
 	// Get customer ID from path
 	id := chi.URLParam(r, "id")
-	
+
 	// Delete customer
 	if err := h.customerService.DeleteCustomer(r.Context(), id); err != nil {
 		if err == domain.ErrCustomerNotFound {
@@ -183,7 +183,7 @@ func (h *CustomerHandler) deleteCustomer(w http.ResponseWriter, r *http.Request)
 		httputils.ErrorJSON(w, httputils.ErrInternal)
 		return
 	}
-	
+
 	w.WriteHeader(http.StatusNoContent)
 }
 
@@ -191,7 +191,7 @@ func (h *CustomerHandler) deleteCustomer(w http.ResponseWriter, r *http.Request)
 func (h *CustomerHandler) getCustomerAccounts(w http.ResponseWriter, r *http.Request) {
 	// Get customer ID from path
 	id := chi.URLParam(r, "id")
-	
+
 	// Get customer to verify it exists
 	_, err := h.customerService.GetCustomer(r.Context(), id)
 	if err != nil {
@@ -203,7 +203,7 @@ func (h *CustomerHandler) getCustomerAccounts(w http.ResponseWriter, r *http.Req
 		httputils.ErrorJSON(w, httputils.ErrInternal)
 		return
 	}
-	
+
 	// Get customer accounts
 	accounts, err := h.accountService.ListAccountsByCustomer(r.Context(), id)
 	if err != nil {
@@ -211,6 +211,6 @@ func (h *CustomerHandler) getCustomerAccounts(w http.ResponseWriter, r *http.Req
 		httputils.ErrorJSON(w, httputils.ErrInternal)
 		return
 	}
-	
+
 	httputils.JSON(w, http.StatusOK, accounts)
 }

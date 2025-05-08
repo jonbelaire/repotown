@@ -15,16 +15,16 @@ type Config struct {
 	LogLevel    string `envconfig:"LOG_LEVEL" default:"info"`
 
 	// Database settings
-	DatabaseURL           string        `envconfig:"DATABASE_URL" required:"true"`
-	DatabaseMaxOpenConns  int           `envconfig:"DATABASE_MAX_OPEN_CONNS" default:"25"`
-	DatabaseMaxIdleConns  int           `envconfig:"DATABASE_MAX_IDLE_CONNS" default:"25"`
-	DatabaseMaxLifetime   time.Duration `envconfig:"DATABASE_MAX_LIFETIME" default:"5m"`
-	DatabaseMaxIdleTime   time.Duration `envconfig:"DATABASE_MAX_IDLE_TIME" default:"5m"`
+	DatabaseURL          string        `envconfig:"DATABASE_URL" required:"true"`
+	DatabaseMaxOpenConns int           `envconfig:"DATABASE_MAX_OPEN_CONNS" default:"25"`
+	DatabaseMaxIdleConns int           `envconfig:"DATABASE_MAX_IDLE_CONNS" default:"25"`
+	DatabaseMaxLifetime  time.Duration `envconfig:"DATABASE_MAX_LIFETIME" default:"5m"`
+	DatabaseMaxIdleTime  time.Duration `envconfig:"DATABASE_MAX_IDLE_TIME" default:"5m"`
 
 	// Auth settings
-	JWTSecret      string        `envconfig:"JWT_SECRET" required:"true"`
-	JWTExpiry      time.Duration `envconfig:"JWT_EXPIRY" default:"24h"`
-	JWTIssuer      string        `envconfig:"JWT_ISSUER" default:"banking-service"`
+	JWTSecret string        `envconfig:"JWT_SECRET" required:"true"`
+	JWTExpiry time.Duration `envconfig:"JWT_EXPIRY" default:"24h"`
+	JWTIssuer string        `envconfig:"JWT_ISSUER" default:"banking-service"`
 }
 
 // DatabaseConfig returns the database configuration

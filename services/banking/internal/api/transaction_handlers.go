@@ -14,14 +14,14 @@ import (
 // TransactionHandler manages transaction-related HTTP requests
 type TransactionHandler struct {
 	transactionService service.TransactionService
-	logger            logging.Logger
+	logger             logging.Logger
 }
 
 // NewTransactionHandler creates a new transaction handler
 func NewTransactionHandler(transactionService service.TransactionService, logger logging.Logger) *TransactionHandler {
 	return &TransactionHandler{
 		transactionService: transactionService,
-		logger:            logger,
+		logger:             logger,
 	}
 }
 
@@ -38,26 +38,26 @@ func (h *TransactionHandler) RegisterRoutes(r chi.Router) {
 func (h *TransactionHandler) listTransactions(w http.ResponseWriter, r *http.Request) {
 	// Parse pagination parameters
 	limit, offset := getPaginationParams(r)
-	
+
 	// Check if filtering by account ID
 	accountID := r.URL.Query().Get("account_id")
-	
+
 	var transactions []*domain.Transaction
 	var err error
-	
+
 	// Get transactions based on filters
 	if accountID != "" {
 		transactions, err = h.transactionService.ListAccountTransactions(r.Context(), accountID, limit, offset)
 	} else {
 		transactions, err = h.transactionService.ListTransactions(r.Context(), limit, offset)
 	}
-	
+
 	if err != nil {
 		h.logger.Error("Failed to list transactions", "error", err)
 		httputils.ErrorJSON(w, httputils.ErrInternal)
 		return
 	}
-	
+
 	httputils.JSON(w, http.StatusOK, transactions)
 }
 
@@ -65,17 +65,17 @@ func (h *TransactionHandler) listTransactions(w http.ResponseWriter, r *http.Req
 func (h *TransactionHandler) createTransaction(w http.ResponseWriter, r *http.Request) {
 	// Parse request body
 	var req struct {
-		Type        domain.TransactionType `json:"type" validate:"required"`
-		AccountID   string                `json:"account_id" validate:"required"`
-		Amount      int64                 `json:"amount" validate:"required,gt=0"`
-		CurrencyCode string                `json:"currency_code" validate:"required"`
-		Description string                `json:"description" validate:"required"`
+		Type         domain.TransactionType `json:"type" validate:"required"`
+		AccountID    string                 `json:"account_id" validate:"required"`
+		Amount       int64                  `json:"amount" validate:"required,gt=0"`
+		CurrencyCode string                 `json:"currency_code" validate:"required"`
+		Description  string                 `json:"description" validate:"required"`
 	}
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
 		httputils.ErrorJSON(w, httputils.ErrBadRequest)
 		return
 	}
-	
+
 	// Validate transaction type
 	if req.Type != domain.TransactionTypeDeposit && req.Type != domain.TransactionTypeWithdrawal {
 		httputils.ErrorJSON(w, httputils.NewError(
@@ -86,7 +86,7 @@ func (h *TransactionHandler) createTransaction(w http.ResponseWriter, r *http.Re
 		))
 		return
 	}
-	
+
 	// Create transaction
 	transaction, err := h.transactionService.CreateTransaction(
 		r.Context(),
@@ -123,7 +123,7 @@ func (h *TransactionHandler) createTransaction(w http.ResponseWriter, r *http.Re
 		httputils.ErrorJSON(w, httputils.ErrInternal)
 		return
 	}
-	
+
 	httputils.JSON(w, http.StatusCreated, transaction)
 }
 
@@ -131,7 +131,7 @@ func (h *TransactionHandler) createTransaction(w http.ResponseWriter, r *http.Re
 func (h *TransactionHandler) getTransaction(w http.ResponseWriter, r *http.Request) {
 	// Get transaction ID from path
 	id := chi.URLParam(r, "id")
-	
+
 	// Get transaction
 	transaction, err := h.transactionService.GetTransaction(r.Context(), id)
 	if err != nil {
@@ -139,11 +139,11 @@ func (h *TransactionHandler) getTransaction(w http.ResponseWriter, r *http.Reque
 		httputils.ErrorJSON(w, httputils.ErrInternal)
 		return
 	}
-	
+
 	if transaction == nil {
 		httputils.ErrorJSON(w, httputils.ErrNotFound)
 		return
 	}
-	
+
 	httputils.JSON(w, http.StatusOK, transaction)
 }
