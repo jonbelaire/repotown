@@ -1,22 +1,72 @@
 {
   "$schema": "https://turborepo.com/schema.json",
   "ui": "tui",
-  "tasks": {
+  "globalDependencies": [".env"],
+  "globalEnv": ["NODE_ENV"],
+  "pipeline": {
     "build": {
       "dependsOn": ["^build"],
-      "env": ["CONTENTFUL_ACCESS_TOKEN", "CONTENTFUL_SPACE_ID"],
-      "inputs": ["$TURBO_DEFAULT$", ".env*"],
-      "outputs": [".next/**", "!.next/cache/**"]
+      "outputs": [".next/**", "!.next/cache/**", "bin/**", "dist/**"]
     },
     "lint": {
-      "dependsOn": ["^lint"]
+      "dependsOn": ["^lint"],
+      "outputs": []
     },
     "check-types": {
-      "dependsOn": ["^check-types"]
+      "dependsOn": ["^check-types"],
+      "outputs": []
+    },
+    "test": {
+      "dependsOn": ["^build", "^test"],
+      "outputs": ["coverage/**"]
     },
     "dev": {
       "cache": false,
-      "persistent": true
+      "persistent": true,
+      "dependsOn": ["^build"]
+    },
+    "clean": {
+      "cache": false
+    },
+    
+    // Go microservice tasks
+    "go:build": {
+      "dependsOn": ["^go:build"],
+      "outputs": ["bin/**"]
+    },
+    "go:test": {
+      "outputs": []
+    },
+    "go:lint": {
+      "outputs": []
+    },
+    
+    // Database tasks
+    "db:migrate": {
+      "cache": false
+    },
+    "db:rollback": {
+      "cache": false
+    },
+    
+    // Docker tasks
+    "docker:build": {
+      "cache": false,
+      "outputs": []
+    },
+    "docker:up": {
+      "cache": false
+    },
+    "docker:down": {
+      "cache": false
+    },
+    
+    // Terraform tasks
+    "tf:plan": {
+      "cache": false
+    },
+    "tf:apply": {
+      "cache": false
     }
   }
 }
